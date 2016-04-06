@@ -36,7 +36,12 @@ defmodule Purduedir.ScrapeHtml do
 
 
   defp grab_name(tree) do
-    {_, [{_, name, _}]}= tree |> Exquery.Query.one({:tag, "h2", [{"class","cn-name"}]})
+    {_, children} = tree |> Exquery.Query.one({:tag, "th", []})
+
+    name = case children do
+      [{_, [{_,name,_}]}] -> name
+      [{_,name,_}] -> name
+    end
     name
   end
 

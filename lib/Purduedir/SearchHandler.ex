@@ -11,7 +11,6 @@ defmodule Purduedir.SearchHandler do
     if method == "POST" and hasBody do
       {:ok, post_body, _} = :cowboy_req.body(req)
       {:ok, %{"searchString" => searchString}}= JSON.decode(post_body)
-      IO.puts(searchString)
       r = GetHtml.get!(searchString)
       json_response = case r do
         %HTTPoison.Response{status_code: 200, body: body} -> body

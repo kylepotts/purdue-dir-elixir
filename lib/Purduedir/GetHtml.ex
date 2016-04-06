@@ -2,8 +2,7 @@ defmodule Purduedir.GetHtml do
   use HTTPoison.Base
   alias Purduedir.ScrapeHtml, as: Scrapper
   def process_url(url) do
-    url = URI.encode_www_form(url)
-    "https://www.purdue.edu/directory?SearchString=" <> url
+    "https://www.purdue.edu/directory?SearchString=" <> URI.encode_www_form(url)
   end
 
    def process_response_body(body) do
