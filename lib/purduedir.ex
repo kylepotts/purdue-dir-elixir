@@ -3,7 +3,7 @@ defmodule Purduedir do
 def start_server() do
   IO.puts("Starting API")
   port = 8080
-  {:ok, conn} = Redix.start_link("redis://kylepotts:b2f3fe5608b70eec22bb1d43ea67d3b5@50.30.35.9:3323/", name: :redix)
+  {:ok, conn} = Redix.start_link(System.get_env("PDIR_REDIS"), name: :redix)
 
   children = [
     Plug.Adapters.Cowboy.child_spec(:http, Purduedir.Plug.Router, [], port: port)
@@ -16,17 +16,17 @@ end
 def print_person(args) do
   searchQuery = List.last(args)
   children = [
-  worker(Purduedir.PrintPerson, [[:hello], [name: :sup_stack]])
+  worker(Purduedir.PrintPerson, [[:hello], [name: :person_printer]])
 ]
   s = Supervisor.start_link(children, strategy: :one_for_one)
-  person = GenServer.call(:sup_stack,{:search, searchQuery})
+  GenServer.call(:person_printer,{:search, searchQuery})
   s
 end
 
 
   def start(_type, _args) do
     clargs = :init.get_plain_arguments()
-    IO.inspect(clargs)
+    #IO.inspect(clargs)
     run_type = Enum.fetch(clargs,2)
     case run_type do
       {:ok ,'--api'} -> start_server()

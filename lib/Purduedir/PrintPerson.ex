@@ -38,16 +38,32 @@ end
 
 def grab_all_data(people,headers) do
   data = Enum.map(people,fn(person) -> grab_person_data(person,headers) end)
+  TableRex.quick_render!(data, headers) |> IO.puts
 end
 
 def grab_person_data(person,headers) do
-  for header <- headers do
+
+  data = for header <- headers do
     item = search_for_person_header(person,header)
-    IO.puts(item)
+    item
   end
 end
 
 def search_for_person_header(person,header) do
+  items = Enum.filter(person,fn(data_item) -> reduce_by(data_item,header) end)
+  case items do
+    [] -> ""
+    [%{"header" => _, "data" => d}] -> d
+  end
+end
+
+def reduce_by(data_item,header) do
+  %{"header" => h, "data" => d} = data_item
+  if h == header do
+    true
+  else
+    false
+  end
 end
 
 
