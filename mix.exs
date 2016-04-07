@@ -7,6 +7,7 @@ defmodule Purduedir.Mixfile do
      elixir: "~> 1.2",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
+     escript: [main_module: Purduedir],  # <- add this line
      deps: deps]
   end
 
@@ -15,7 +16,7 @@ defmodule Purduedir.Mixfile do
   # Type "mix help compile.app" for more information
   def application do
     [ mod: { Purduedir, [] },
-      applications: [:logger, :httpoison, :cowboy, :plug]]
+      applications: [:logger, :httpoison, :cowboy, :plug, :redix]]
   end
 
   # Dependencies can be Hex packages:
@@ -28,11 +29,13 @@ defmodule Purduedir.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
+
     [{:httpoison, "~> 0.8.0"},
     {:exquery, "~> 0.0.11"},
     { :json,   "~> 0.3.0"},
     {:cowboy, "~> 1.0"},
     {:plug, "~> 1.0"},
-    {:poison, "~> 2.0"}]
+    {:redix, ">= 0.0.0"},
+    {:exrm, "~> 0.18.1"}]
   end
 end

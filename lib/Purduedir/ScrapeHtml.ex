@@ -5,7 +5,7 @@ defmodule Purduedir.ScrapeHtml do
     if type == :none do
       list_items = tree |> Exquery.Query.all({:tag,"table",[{"class","more"}]})
       people = Enum.map(list_items, &get_person_info/1)
-      %{:type => "sucess", :people => people}
+      %{:type => "success", :people => people}
     else
       %{:type => "error", :error_text => error_text}
     end
