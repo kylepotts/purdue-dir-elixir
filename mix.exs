@@ -16,7 +16,7 @@ defmodule Purduedir.Mixfile do
   # Type "mix help compile.app" for more information
   def application do
     [ mod: { Purduedir, [] },
-      applications: [:logger, :httpoison, :cowboy, :plug, :redix, :table_rex]]
+      applications: [:logger, :httpoison, :cowboy, :plug, :redix, :table_rex, :httpoison, :json, :plug, :redix, :table_rex, :exquery]]
   end
 
   # Dependencies can be Hex packages:

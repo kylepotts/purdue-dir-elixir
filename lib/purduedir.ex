@@ -13,25 +13,37 @@ def start_server() do
 end
 
 
-def print_person(args) do
-  searchQuery = List.last(args)
+def print_person(searchString) do
   children = [
   worker(Purduedir.PrintPerson, [[:hello], [name: :person_printer]])
 ]
   s = Supervisor.start_link(children, strategy: :one_for_one)
-  GenServer.call(:person_printer,{:search, searchQuery})
+  GenServer.call(:person_printer,{:search, searchString})
   s
 end
 
+def search_args_for(args,search_for) do
+  arg = Enum.filter(Enum.with_index(args),fn({item,index}) -> search_for == item end)
+  case arg do
+    [] -> {false,nil}
+    [a] -> {true, elem(a,1)}
+  end
+end
 
   def start(_type, _args) do
     clargs = :init.get_plain_arguments()
-    #IO.inspect(clargs)
-    run_type = Enum.fetch(clargs,2)
-    case run_type do
-      {:ok ,'--api'} -> start_server()
-      {:ok , '--q'} -> print_person(clargs)
-      _ -> IO.puts("Incorrect Argument")
+    {to_search?, query_index} = search_args_for(clargs, '--q')
+    {to_run_api, _} = search_args_for(clargs, '--api')
+    IO.inspect(clargs)
+    IO.inspect(to_search?)
+    if to_search? do
+      {:ok,searchString} = Enum.fetch(clargs,query_index+1)
+      print_person(searchString)
+    else
+      if to_run_api do
+        start_server()
+      end
     end
   end
+
 end
