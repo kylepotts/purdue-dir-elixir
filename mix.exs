@@ -36,7 +36,7 @@ defmodule Purduedir.Mixfile do
     {:cowboy, "~> 1.0"},
     {:plug, "~> 1.0"},
     {:redix, ">= 0.0.0"},
-    {:exrm, "~> 0.18.1"},
+    {:exrm, path: "/home/kyle/dev/elixir/exrm"},
     {:table_rex, "~> 0.8.0"}]
   end
 end
